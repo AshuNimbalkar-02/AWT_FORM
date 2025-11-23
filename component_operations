@@ -1,0 +1,32 @@
+package project;
+
+import java.sql.*;
+
+public class ComponentOperations {
+
+    public String saveData(String name, String city, String skills, int age) {
+        try {
+            DBConnection db = new DBConnection();
+            Connection con = db.getConnection();
+
+            if (con == null) return "Error: DB Connection Failed";
+
+            String query = "INSERT INTO user_components (name, city, skills, age) VALUES (?, ?, ?, ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setString(1, name);
+            pst.setString(2, city);
+            pst.setString(3, skills);
+            pst.setInt(4, age);
+
+            int rows = pst.executeUpdate();
+            con.close();
+
+            if (rows > 0) return "Success: Data Saved!";
+            else return "Failed: No rows affected.";
+
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+}
