@@ -1,0 +1,12 @@
+CREATE DATABASE awt_project;
+USE awt_project;
+
+CREATE TABLE user_components (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    skills VARCHAR(200),
+    age INT
+);
+
+select * from user_components;
