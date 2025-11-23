@@ -1,0 +1,20 @@
+package project;
+
+import java.sql.*;
+
+public class DBConnection {
+    
+    public Connection getConnection() {
+        Connection con = null;
+        try {
+           
+            String url = "jdbc:mysql://localhost:3306/awt_project", user = "root", pass = "Ashutosh@02"; 
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(url, user, pass);
+        } catch (Exception e) {
+            System.out.println("Connection Error: " + e);
+        }
+        return con;
+    }
+}
