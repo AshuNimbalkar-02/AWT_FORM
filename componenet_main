@@ -1,0 +1,145 @@
+package project;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class ComponentMain extends Frame implements ActionListener, AdjustmentListener {
+   
+    Label lName, lCity, lSkills, lAge, lAgeDisplay, lStatus;
+    TextField tName;
+    Choice cCity;      
+    List listSkills;   
+    Scrollbar sbAge;  
+    Button bSubmit, bClear;
+
+    ComponentOperations ops = new ComponentOperations();
+
+    public ComponentMain() {
+        setTitle("AWT Component Demo");
+        setSize(450, 550);
+        setLayout(null);
+        setVisible(true);
+
+        // Label & TextField
+        add(new Label("Full Name:")).setBounds(50, 60, 80, 20);
+        tName = new TextField();
+        tName.setBounds(150, 60, 200, 20);
+        add(tName);
+
+        // Choice Component 
+        add(new Label("Select City:")).setBounds(50, 100, 80, 20);
+        cCity = new Choice();
+        cCity.setBounds(150, 100, 200, 20);
+        cCity.add("Chh.Sambhajinagar");
+        cCity.add("Vaijapur");
+        cCity.add("Gangapur");
+        cCity.add("Jalgaon");
+        cCity.add("Kannad");
+        cCity.add("Nanded");
+        cCity.add("Paithan");
+        cCity.add("Delhi");
+        cCity.add("Pune");
+        cCity.add("Parbhani");
+        cCity.add("Kolhapur");
+        
+        
+        add(cCity);
+
+        // 3. List Component 
+        add(new Label("Select Skills:")).setBounds(50, 140, 80, 20);
+        listSkills = new List(12, true); 
+        listSkills.setBounds(150, 140, 200, 80);
+        listSkills.add("Java");
+        listSkills.add("Python");
+        listSkills.add("C++");
+        listSkills.add("SQL");
+        listSkills.add("HTML");
+        listSkills.add("CSS");
+        listSkills.add("React");
+        listSkills.add("Gen AI");
+        listSkills.add("Agentic AI");
+        listSkills.add("MCP");
+        listSkills.add("SQL");
+        listSkills.add("Supabase");
+        
+        add(listSkills);
+
+        // Scrollbar Component 
+        add(new Label("Select Age:")).setBounds(50, 240, 80, 20);
+        sbAge = new Scrollbar(Scrollbar.HORIZONTAL, 18, 1, 18, 100);
+        sbAge.setBounds(150, 240, 200, 20);
+        sbAge.addAdjustmentListener(this); 
+        add(sbAge);
+
+        // Label 
+        lAgeDisplay = new Label("Age: 18");
+        lAgeDisplay.setBounds(360, 240, 50, 20);
+        add(lAgeDisplay);
+
+        // Buttons
+        bSubmit = new Button("Submit Data");
+        bSubmit.setBounds(100, 300, 100, 30);
+        bSubmit.addActionListener(this);
+        add(bSubmit);
+
+        bClear = new Button("Clear Form");
+        bClear.setBounds(220, 300, 100, 30);
+        bClear.addActionListener(this);
+        add(bClear);
+
+        
+        lStatus = new Label("Ready...");
+        lStatus.setBounds(50, 350, 350, 20);
+        add(lStatus);
+
+    
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+    }
+
+   
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        lAgeDisplay.setText("Age: " + sbAge.getValue());
+    }
+
+    
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == bSubmit) {
+            
+            String name = tName.getText();
+            String city = cCity.getSelectedItem(); 
+            int age = sbAge.getValue();            
+
+            // Get from List 
+            String[] items = listSkills.getSelectedItems();
+            String skills = "";
+            for (int i = 0; i < items.length; i++) {
+                skills += items[i] + ", ";
+            }
+
+           
+            String res = ops.saveData(name, city, skills, age);
+            lStatus.setText(res);
+
+        } else {
+            // Clear Form
+            tName.setText("");
+            cCity.select(0); 
+            sbAge.setValue(18); 
+            lAgeDisplay.setText("Age: 18");
+            
+            
+            for(int i=0; i<listSkills.getItemCount(); i++) listSkills.deselect(i);
+            
+            lStatus.setText("Form Cleared.");
+        }
+    }
+
+  
+    public static void main(String[] args) {
+        new ComponentMain();
+    }
+}
